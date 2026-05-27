@@ -1,0 +1,10 @@
+{"_id":"comment_1","share_id":"share_1","user_id":"user_2","content":"好看！这个搭配很适合春天～","parent_id":"","created_at":{"$date":"2026-04-20T10:30:00.000Z"}}
+{"_id":"comment_2","share_id":"share_1","user_id":"user_3","content":"白T配牛仔裤真的是永远的经典！","parent_id":"","created_at":{"$date":"2026-04-20T14:20:00.000Z"}}
+{"_id":"comment_3","share_id":"share_2","user_id":"user_3","content":"裙子好好看！请问在哪里买的呀？","parent_id":"","created_at":{"$date":"2026-04-18T16:00:00.000Z"}}
+{"_id":"comment_4","share_id":"share_2","user_id":"user_4","content":"春天就应该穿得美美的！","parent_id":"","created_at":{"$date":"2026-04-18T18:30:00.000Z"}}
+{"_id":"comment_5","share_id":"share_4","user_id":"user_1","content":"日系穿搭太温柔了，学到了！","parent_id":"","created_at":{"$date":"2026-04-24T09:15:00.000Z"}}
+{"_id":"comment_6","share_id":"share_4","user_id":"user_5","content":"奶茶色系好显白，收藏了～","parent_id":"","created_at":{"$date":"2026-04-24T11:00:00.000Z"}}
+{"_id":"comment_7","share_id":"share_7","user_id":"user_1","content":"法式穿搭永远的神！丝巾点睛之笔","parent_id":"","created_at":{"$date":"2026-04-25T10:00:00.000Z"}}
+{"_id":"comment_8","share_id":"share_7","user_id":"user_3","content":"好优雅！请问丝巾是什么品牌？","parent_id":"","created_at":{"$date":"2026-04-25T12:30:00.000Z"}}
+{"_id":"comment_9","share_id":"share_3","user_id":"user_1","content":"黑白配简约又帅气！","parent_id":"","created_at":{"$date":"2026-04-23T15:00:00.000Z"}}
+{"_id":"comment_10","share_id":"share_5","user_id":"user_2","content":"通勤穿搭可以直接抄作业了～","parent_id":"","created_at":{"$date":"2026-04-22T17:00:00.000Z"}}

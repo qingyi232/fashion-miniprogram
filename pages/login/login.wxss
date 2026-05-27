@@ -1,0 +1,96 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(165deg, #faf9f7 0%, #fdf6f0 50%, #f0f7f2 100%);
+  padding: 32rpx;
+}
+
+.login-card {
+  width: 100%;
+}
+
+.login-brand {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.brand-icon {
+  font-size: 100rpx;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.brand-title {
+  font-size: 56rpx;
+  font-weight: 800;
+  color: #d4a574;
+  display: block;
+  letter-spacing: 8rpx;
+}
+
+.brand-desc {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 12rpx;
+  display: block;
+}
+
+.login-form {
+  padding: 40rpx;
+  border-radius: 28rpx;
+}
+
+.form-title {
+  font-size: 28rpx;
+  color: #666;
+  text-align: center;
+  margin-bottom: 28rpx;
+  display: block;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.user-option {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #eee;
+}
+
+.user-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 3rpx solid #eee;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.user-role {
+  display: block;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.arrow {
+  font-size: 36rpx;
+  color: #999;
+}

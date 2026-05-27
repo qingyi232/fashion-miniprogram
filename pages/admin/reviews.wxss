@@ -1,0 +1,100 @@
+.filter-tabs {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.filter-tab {
+  padding: 12rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  background: #fff;
+  border: 2rpx solid #eee;
+  color: #666;
+}
+
+.filter-tab.active {
+  background: #d4a574;
+  color: #fff;
+  border-color: #d4a574;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.review-card {
+  padding: 24rpx;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.review-avatar {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+}
+
+.review-info {
+  flex: 1;
+}
+
+.review-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  display: block;
+}
+
+.review-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.status-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+}
+
+.status-badge.pending {
+  background: #fff3e6;
+  color: #e6a23c;
+}
+
+.status-badge.approved {
+  background: #edf7f0;
+  color: #6db884;
+}
+
+.status-badge.rejected {
+  background: #fde8e8;
+  color: #d4726a;
+}
+
+.review-img {
+  width: 100%;
+  height: 300rpx;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.review-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.review-actions {
+  display: flex;
+  gap: 12rpx;
+  justify-content: flex-end;
+}

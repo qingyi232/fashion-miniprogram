@@ -1,0 +1,111 @@
+<view class="container">
+  <view class="page-header" style="display:flex;justify-content:space-between;align-items:center">
+    <view>
+      <view class="title">我的衣橱</view>
+      <view class="desc">共 {{clothes.length}} 件衣物</view>
+    </view>
+    <view class="btn btn-primary" bindtap="showAddModal">+ 添加衣物</view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker range="{{['全部类型'].concat(categories)}}" bindchange="onCategoryChange">
+      <view class="filter-select">{{filter.category || '全部类型'}} ▾</view>
+    </picker>
+    <picker range="{{['全部季节'].concat(seasons)}}" bindchange="onSeasonChange">
+      <view class="filter-select">{{filter.season || '全部季节'}} ▾</view>
+    </picker>
+    <picker range="{{['全部场合'].concat(occasions)}}" bindchange="onOccasionChange">
+      <view class="filter-select">{{filter.occasion || '全部场合'}} ▾</view>
+    </picker>
+    <picker range="{{['全部颜色'].concat(colors)}}" bindchange="onColorChange">
+      <view class="filter-select">{{filter.color || '全部颜色'}} ▾</view>
+    </picker>
+  </view>
+
+  <!-- 衣物列表 -->
+  <view class="clothes-grid" wx:if="{{clothes.length}}">
+    <view class="clothes-card card" wx:for="{{clothes}}" wx:key="_id" bindlongpress="onLongPress" data-item="{{item}}">
+      <view class="clothes-img-wrap">
+        <image src="{{item.image}}" class="clothes-img" mode="aspectFill" binderror="onImgError" data-idx="{{index}}"></image>
+        <view class="fav-btn" catchtap="toggleFav" data-item="{{item}}">{{item.is_favorite ? '❤️' : '🤍'}}</view>
+      </view>
+      <view class="clothes-info">
+        <text class="clothes-name">{{item.name}}</text>
+        <view class="clothes-tags">
+          <text class="tag">{{item.category}}</text>
+          <text class="tag" wx:if="{{item.color}}">{{item.color}}</text>
+          <text class="tag" wx:if="{{item.season}}">{{item.season}}</text>
+        </view>
+        <view class="clothes-meta">
+          <text>穿过 {{item.wear_count}} 次</text>
+          <text wx:if="{{item.brand}}">{{item.brand}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="empty-state" wx:else>
+    <view class="icon">👚</view>
+    <text>衣橱还是空的，快添加衣物吧</text>
+  </view>
+
+  <!-- 添加/编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{showForm}}" bindtap="closeForm">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-title">{{editingItem ? '编辑衣物' : '添加衣物'}}</view>
+      <view class="form-group">
+        <text class="form-label">衣物名称</text>
+        <input class="form-input" value="{{form.name}}" bindinput="onInput" data-field="name" placeholder="如：白色基础T恤" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">衣物图片</text>
+        <view class="img-upload-area">
+          <image wx:if="{{form.image}}" src="{{form.image}}" class="upload-preview" mode="aspectFill" bindtap="previewImage"></image>
+          <view wx:else class="upload-placeholder">
+            <text style="font-size:60rpx">📷</text>
+            <text style="font-size:24rpx;color:#999;margin-top:8rpx">点击下方按钮上传图片</text>
+          </view>
+        </view>
+        <view class="img-upload-btns">
+          <view class="btn btn-sm btn-primary" bindtap="takePhoto">📷 拍照上传</view>
+          <view class="btn btn-sm btn-outline" bindtap="chooseImage">🖼️ 相册选择</view>
+        </view>
+        <input class="form-input" value="{{form.image}}" bindinput="onInput" data-field="image" placeholder="或输入图片URL" style="margin-top:12rpx;font-size:24rpx" />
+      </view>
+      <view class="form-row">
+        <view class="form-group">
+          <text class="form-label">类型</text>
+          <picker range="{{categories}}" value="{{categoryIdx}}" bindchange="onFormCategory">
+            <view class="form-input">{{form.category}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">季节</text>
+          <picker range="{{seasons}}" value="{{seasonIdx}}" bindchange="onFormSeason">
+            <view class="form-input">{{form.season}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="form-row">
+        <view class="form-group">
+          <text class="form-label">场合</text>
+          <picker range="{{occasions}}" value="{{occasionIdx}}" bindchange="onFormOccasion">
+            <view class="form-input">{{form.occasion}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">颜色</text>
+          <input class="form-input" value="{{form.color}}" bindinput="onInput" data-field="color" placeholder="如：白色" />
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">品牌</text>
+        <input class="form-input" value="{{form.brand}}" bindinput="onInput" data-field="brand" placeholder="如：UNIQLO" />
+      </view>
+      <view class="modal-actions">
+        <view class="btn btn-ghost" bindtap="closeForm">取消</view>
+        <view class="btn btn-primary" bindtap="submitForm">{{editingItem ? '保存修改' : '添加'}}</view>
+      </view>
+    </view>
+  </view>
+</view>

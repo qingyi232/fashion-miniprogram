@@ -1,0 +1,112 @@
+<view class="container">
+  <view class="page-header">
+    <view class="title">穿搭广场</view>
+    <view class="desc">发现更多穿搭灵感</view>
+  </view>
+
+  <!-- 排序 -->
+  <view class="sort-bar">
+    <view class="sort-tab {{sortBy === 'latest' ? 'active' : ''}}" bindtap="setSortBy" data-val="latest">最新发布</view>
+    <view class="sort-tab {{sortBy === 'hot' ? 'active' : ''}}" bindtap="setSortBy" data-val="hot">最热推荐</view>
+  </view>
+
+  <!-- 筛选 -->
+  <view class="filter-section">
+    <view class="filter-row">
+      <text class="filter-label">风格：</text>
+      <scroll-view class="filter-scroll" scroll-x="true">
+        <view class="filter-tags">
+          <view class="filter-tag {{!styleFilter ? 'active' : ''}}" bindtap="setStyleFilter" data-val="">全部</view>
+          <view class="filter-tag {{styleFilter === item ? 'active' : ''}}" wx:for="{{styleTags}}" wx:key="*this"
+            bindtap="setStyleFilter" data-val="{{item}}">{{item}}</view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="filter-row">
+      <text class="filter-label">场合：</text>
+      <scroll-view class="filter-scroll" scroll-x="true">
+        <view class="filter-tags">
+          <view class="filter-tag {{!occasionFilter ? 'active' : ''}}" bindtap="setOccasionFilter" data-val="">全部</view>
+          <view class="filter-tag {{occasionFilter === item ? 'active' : ''}}" wx:for="{{occasionTags}}" wx:key="*this"
+            bindtap="setOccasionFilter" data-val="{{item}}">{{item}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 穿搭列表 -->
+  <view class="share-grid" wx:if="{{shares.length}}">
+    <navigator class="share-card card" wx:for="{{shares}}" wx:key="id" url="/pages/share-detail/share-detail?id={{item._id}}">
+      <image src="{{item.images}}" class="share-img" mode="aspectFill"></image>
+      <view class="share-body">
+        <view class="share-user">
+          <image src="{{item.avatar}}" class="share-avatar"></image>
+          <text>{{item.nickname}}</text>
+        </view>
+        <text class="share-text">{{item.content}}</text>
+        <view class="share-bottom">
+          <view class="share-stats">
+            <text>❤️ {{item.likes_count}}</text>
+            <text>💬 {{item.comments_count}}</text>
+            <text>⭐ {{item.collects_count}}</text>
+          </view>
+          <view class="borrow-btn" catchtap="borrowOutfit" data-item="{{item}}">📥</view>
+        </view>
+      </view>
+    </navigator>
+  </view>
+  <view class="empty-state" wx:else>
+    <view class="icon">📸</view>
+    <text>暂无穿搭分享</text>
+  </view>
+
+  <!-- 悬浮发布按钮 -->
+  <view class="fab-btn" bindtap="showPublishModal">📸</view>
+
+  <!-- 发布弹窗 -->
+  <view class="modal-mask" wx:if="{{showPublish}}" bindtap="hidePublish">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-title">发布穿搭</view>
+      <view class="form-group">
+        <text class="form-label">穿搭图片</text>
+        <view class="img-upload-area">
+          <image wx:if="{{pubForm.images}}" src="{{pubForm.images}}" class="upload-preview" mode="aspectFill" bindtap="previewPubImage"></image>
+          <view wx:else class="upload-placeholder">
+            <text style="font-size:60rpx">📸</text>
+            <text style="font-size:24rpx;color:#999;margin-top:8rpx">上传穿搭实拍图或预览图</text>
+          </view>
+        </view>
+        <view class="img-upload-btns">
+          <view class="btn btn-sm btn-primary" bindtap="takePubPhoto">📷 拍照上传</view>
+          <view class="btn btn-sm btn-outline" bindtap="choosePubImage">🖼️ 相册选择</view>
+        </view>
+        <input class="form-input" value="{{pubForm.images}}" bindinput="onPubInput" data-field="images" placeholder="或输入图片URL" style="margin-top:12rpx;font-size:24rpx" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">穿搭描述</text>
+        <textarea class="form-textarea" value="{{pubForm.content}}" bindinput="onPubInput" data-field="content" placeholder="分享你的穿搭心得..."></textarea>
+      </view>
+      <view class="form-row">
+        <view class="form-group">
+          <text class="form-label">风格标签</text>
+          <input class="form-input" value="{{pubForm.style_tags}}" bindinput="onPubInput" data-field="style_tags" placeholder="如：简约,通勤" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">场合标签</text>
+          <input class="form-input" value="{{pubForm.occasion_tags}}" bindinput="onPubInput" data-field="occasion_tags" placeholder="如：日常,约会" />
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">可见范围</text>
+        <picker range="{{['公开','仅自己可见']}}" bindchange="onVisibility">
+          <view class="form-input">{{pubForm.visibility === 'public' ? '公开' : '仅自己可见'}}</view>
+        </picker>
+      </view>
+      <text class="pub-hint">公开内容需管理员审核通过后，才会在穿搭广场展示</text>
+      <view class="modal-actions">
+        <view class="btn btn-ghost" bindtap="hidePublish">取消</view>
+        <view class="btn btn-primary" bindtap="doPublish">提交审核</view>
+      </view>
+    </view>
+  </view>
+</view>

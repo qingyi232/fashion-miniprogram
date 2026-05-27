@@ -1,0 +1,63 @@
+<view class="container" wx:if="{{share}}">
+  <!-- 图片 -->
+  <image src="{{share.images}}" class="detail-img" mode="widthFix"></image>
+
+  <!-- 用户信息 -->
+  <view class="detail-user">
+    <image src="{{share.avatar}}" class="detail-avatar"></image>
+    <view>
+      <text class="detail-nickname">{{share.nickname}}</text>
+      <text class="detail-time">{{share.created_at}}</text>
+    </view>
+  </view>
+
+  <!-- 内容 -->
+  <text class="detail-text">{{share.content}}</text>
+  <view class="detail-tags">
+    <text class="tag" wx:for="{{allTags}}" wx:key="*this">{{item}}</text>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="detail-actions">
+    <view class="action-btn {{share.liked ? 'active-like' : ''}}" bindtap="doLike">
+      <text>{{share.liked ? '❤️' : '🤍'}} {{share.likes_count || 0}}</text>
+    </view>
+    <view class="action-btn {{share.collected ? 'active-collect' : ''}}" bindtap="doCollect">
+      <text>{{share.collected ? '⭐' : '☆'}} {{share.collects_count || 0}}</text>
+    </view>
+  </view>
+
+  <!-- 评论区 -->
+  <view class="comments-section">
+    <text class="section-sub">评论（{{share.comments.length || 0}}）</text>
+    <view class="comment-input">
+      <input class="form-input" style="flex:1" value="{{commentText}}" bindinput="onCommentInput" placeholder="写下你的评论..." confirm-type="send" bindconfirm="doComment" />
+      <view class="btn btn-sm btn-primary" bindtap="doComment">发送</view>
+    </view>
+    <view class="comment-list">
+      <view class="comment-item" wx:for="{{mainComments}}" wx:key="id">
+        <image src="{{item.avatar}}" class="comment-avatar"></image>
+        <view class="comment-body">
+          <text class="comment-name">{{item.nickname}}</text>
+          <text class="comment-text">{{item.content}}</text>
+          <view class="comment-footer">
+            <text class="comment-time">{{item.created_at}}</text>
+            <view class="reply-btn" bindtap="toggleReply" data-id="{{item.id}}">回复</view>
+          </view>
+          <view class="reply-input" wx:if="{{replyTo === item.id}}">
+            <input class="form-input" style="flex:1" value="{{replyText}}" bindinput="onReplyInput" placeholder="回复 {{item.nickname}}..." />
+            <view class="btn btn-sm btn-primary" bindtap="doReply" data-parent="{{item}}">发送</view>
+          </view>
+          <!-- 回复列表 -->
+          <view class="reply-item" wx:for="{{item.replies}}" wx:for-item="r" wx:key="id">
+            <image src="{{r.avatar}}" class="reply-avatar"></image>
+            <view>
+              <text class="reply-name">{{r.nickname}}</text>
+              <text class="reply-text-content">{{r.content}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

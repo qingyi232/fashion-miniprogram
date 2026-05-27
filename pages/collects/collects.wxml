@@ -1,0 +1,44 @@
+<view class="container">
+  <view class="page-header">
+    <view class="title">我的收藏</view>
+    <view class="desc">收藏的穿搭分享会显示在这里</view>
+  </view>
+
+  <view class="loading-box" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="error-box" wx:elif="{{loadError}}">
+    <text>{{loadError}}</text>
+    <view class="btn btn-outline btn-sm retry-btn" bindtap="loadCollects">重试</view>
+  </view>
+
+  <view class="share-grid" wx:elif="{{collects.length}}">
+    <navigator
+      class="share-card card"
+      wx:for="{{collects}}"
+      wx:key="_id"
+      url="/pages/share-detail/share-detail?id={{item._id}}"
+    >
+      <image src="{{item.images}}" class="share-img" mode="aspectFill"></image>
+      <view class="share-body">
+        <view class="share-user">
+          <image src="{{item.avatar}}" class="share-avatar"></image>
+          <text>{{item.nickname}}</text>
+        </view>
+        <text class="share-text">{{item.content}}</text>
+        <view class="share-stats">
+          <text>❤️ {{item.likes_count || 0}}</text>
+          <text>💬 {{item.comments_count || 0}}</text>
+          <text>⭐ {{item.collects_count || 0}}</text>
+        </view>
+      </view>
+    </navigator>
+  </view>
+
+  <view class="empty-state" wx:else>
+    <view class="icon">⭐</view>
+    <text>还没有收藏任何穿搭</text>
+    <view class="btn btn-primary" style="margin-top:24rpx" bindtap="goSquare">去广场逛逛</view>
+  </view>
+</view>

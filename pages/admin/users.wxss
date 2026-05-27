@@ -1,0 +1,62 @@
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.user-card {
+  padding: 24rpx;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.user-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  display: block;
+}
+
+.user-meta {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 4rpx;
+  display: block;
+}
+
+.status-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background: #edf7f0;
+  color: #6db884;
+}
+
+.status-badge.disabled {
+  background: #fde8e8;
+  color: #d4726a;
+}
+
+.user-actions {
+  display: flex;
+  gap: 10rpx;
+  margin-top: 12rpx;
+  justify-content: flex-end;
+}

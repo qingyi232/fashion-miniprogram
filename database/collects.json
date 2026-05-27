@@ -1,0 +1,2 @@
+{"_id":"collect_1","share_id":"share_4","user_id":"user_5","created_at":{"$date":"2026-04-24T11:00:00.000Z"}}
+{"_id":"collect_2","share_id":"share_7","user_id":"user_3","created_at":{"$date":"2026-04-25T12:30:00.000Z"}}

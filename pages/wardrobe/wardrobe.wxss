@@ -1,0 +1,124 @@
+.filter-bar {
+  display: flex;
+  margin-bottom: 24rpx;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.filter-bar picker {
+  flex: 1;
+  min-width: 140rpx;
+}
+
+.filter-select {
+  padding: 14rpx 22rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid #eee;
+  background: #fff;
+  font-size: 26rpx;
+  color: #2c2c2c;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.clothes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.clothes-card {
+  width: 48%;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-bottom: 16rpx;
+}
+
+.clothes-img-wrap {
+  position: relative;
+  height: 280rpx;
+  overflow: hidden;
+}
+
+.clothes-img {
+  width: 100%;
+  height: 100%;
+}
+
+.fav-btn {
+  position: absolute;
+  top: 12rpx;
+  right: 12rpx;
+  background: rgba(255,255,255,0.85);
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clothes-info {
+  padding: 16rpx;
+}
+
+.clothes-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.clothes-tags {
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+  margin-bottom: 10rpx;
+}
+
+.clothes-meta {
+  font-size: 22rpx;
+  color: #999;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.clothes-actions {
+  display: flex;
+  gap: 8rpx;
+}
+
+.btn-danger {
+  color: #d4726a !important;
+}
+
+.img-upload-area {
+  width: 100%;
+  height: 280rpx;
+  border-radius: 16rpx;
+  border: 2rpx dashed #ddd;
+  overflow: hidden;
+  margin-bottom: 16rpx;
+  background: #fafafa;
+}
+
+.upload-preview {
+  width: 100%;
+  height: 100%;
+}
+
+.upload-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-upload-btns {
+  display: flex;
+  gap: 16rpx;
+}

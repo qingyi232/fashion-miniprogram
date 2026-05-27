@@ -1,0 +1,38 @@
+<view class="container">
+  <view class="page-header">
+    <view class="title">内容审核</view>
+    <view class="desc">审核用户发布的穿搭分享</view>
+  </view>
+
+  <view class="filter-tabs">
+    <view class="filter-tab {{statusFilter === '' ? 'active' : ''}}" bindtap="setFilter" data-val="">全部</view>
+    <view class="filter-tab {{statusFilter === 'pending' ? 'active' : ''}}" bindtap="setFilter" data-val="pending">待审核</view>
+    <view class="filter-tab {{statusFilter === 'approved' ? 'active' : ''}}" bindtap="setFilter" data-val="approved">已通过</view>
+    <view class="filter-tab {{statusFilter === 'rejected' ? 'active' : ''}}" bindtap="setFilter" data-val="rejected">已驳回</view>
+  </view>
+
+  <view class="review-list" wx:if="{{reviews.length}}">
+    <view class="review-card card" wx:for="{{reviews}}" wx:key="_id">
+      <view class="review-header">
+        <image src="{{item.avatar}}" class="review-avatar"></image>
+        <view class="review-info">
+          <text class="review-name">{{item.nickname}}</text>
+          <text class="review-time">{{item.created_at}}</text>
+        </view>
+        <view class="status-badge {{item.status}}">
+          {{item.status === 'pending' ? '待审核' : item.status === 'approved' ? '已通过' : '已驳回'}}
+        </view>
+      </view>
+      <image wx:if="{{item.images}}" src="{{item.images}}" class="review-img" mode="aspectFill"></image>
+      <text class="review-content">{{item.content}}</text>
+      <view class="review-actions" wx:if="{{item.status === 'pending'}}">
+        <view class="btn btn-sm btn-primary" bindtap="approveReview" data-id="{{item._id}}">通过</view>
+        <view class="btn btn-sm btn-outline" style="color:#d4726a;border-color:#d4726a" bindtap="rejectReview" data-id="{{item._id}}">驳回</view>
+      </view>
+    </view>
+  </view>
+  <view class="empty-state" wx:else>
+    <view class="icon">📋</view>
+    <text>暂无审核内容</text>
+  </view>
+</view>

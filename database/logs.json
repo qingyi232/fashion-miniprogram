@@ -1,0 +1,4 @@
+{"_id":"log_1","action":"系统启动","detail":"系统正常启动","operator":"system","created_at":{"$date":"2026-04-25T08:00:00.000Z"}}
+{"_id":"log_2","action":"用户登录","detail":"用户 林小鹿 登录系统","operator":"user","created_at":{"$date":"2026-04-25T09:00:00.000Z"}}
+{"_id":"log_3","action":"内容审核","detail":"审核通过穿搭分享 #6","operator":"admin","created_at":{"$date":"2026-04-25T10:00:00.000Z"}}
+{"_id":"log_4","action":"数据备份","detail":"数据库自动备份完成","operator":"system","created_at":{"$date":"2026-04-25T02:00:00.000Z"}}

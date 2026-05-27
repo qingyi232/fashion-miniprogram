@@ -1,0 +1,376 @@
+================================================================
+    智能穿搭衣橱管理微信小程序 - 代码说明文档
+================================================================
+
+一、项目概述
+================================================================
+
+项目名称：智能穿搭衣橱管理微信小程序
+技术栈：微信小程序原生开发 + 微信云开发
+前端：WXML + WXSS + JavaScript
+后端：微信云函数（Node.js）
+数据库：微信云数据库（NoSQL文档型）
+存储：微信云存储（衣物图片、穿搭图片）
+
+
+二、项目目录结构
+================================================================
+
+穿搭小程序/
+├── app.js                    # 小程序入口文件，全局配置与初始化
+├── app.json                  # 小程序全局配置（页面路由、tabBar等）
+├── app.wxss                  # 全局样式文件
+├── project.config.json       # 项目配置文件（AppID、云函数根目录等）
+│
+├── assets/                   # 静态资源（图标等）
+│   └── icons/                # tabBar 图标
+│
+├── utils/                    # 工具模块
+│   ├── api.js                # API 统一封装（云函数调用/HTTP请求）
+│   └── store.js              # 用户状态管理（登录状态、用户信息缓存）
+│
+├── pages/                    # 页面目录
+│   ├── home/                 # 首页（公告、推荐、天气穿搭建议）
+│   ├── wardrobe/             # 衣橱管理页（衣物增删改查、拍照上传）
+│   ├── match/                # 智能搭配页（自动搭配、手动搭配）
+│   ├── share/                # 穿搭广场（浏览公开穿搭分享）
+│   ├── share-detail/         # 穿搭详情页（点赞、评论、收藏）
+│   ├── profile/              # 个人中心（用户信息、功能入口）
+│   ├── login/                # 登录页（演示用户选择）
+│   ├── stats/                # 数据统计页（衣物使用统计、风格分析）
+│   └── admin/                # 管理后台
+│       ├── dashboard         # 管理仪表盘（数据概览）
+│       ├── users             # 用户管理
+│       ├── reviews           # 内容审核
+│       └── system            # 系统管理（公告、日志、反馈）
+│
+├── cloudfunctions/           # 云函数目录
+│   ├── user/                 # 用户云函数
+│   ├── clothes/              # 衣物云函数
+│   ├── outfit/               # 搭配云函数
+│   ├── share/                # 分享云函数
+│   ├── stats/                # 统计云函数
+│   └── admin/                # 管理云函数
+│
+├── database/                 # 数据库相关（如有导入数据）
+└── fashion-app/              # Web端辅助项目（Vue3+Express，非核心）
+
+
+三、系统角色与权限
+================================================================
+
+本系统包含两类角色：
+
+1. 普通用户（role: 'user'）
+   可访问：首页、衣橱、搭配、广场、个人中心、统计
+   功能：衣物管理、智能搭配、穿搭分享、互动
+
+2. 管理员（role: 'admin'）
+   可访问：管理后台（数据概览、用户管理、内容审核、系统管理）
+   功能：用户管理、内容审核、发布公告、查看日志
+
+权限判断逻辑：
+   - store.js 中 isAdmin() 方法判断 user.role === 'admin'
+   - profile.wxml 中通过 wx:if="{{isAdmin}}" 切换管理员/用户界面
+   - login.js 中管理员登录后跳转到管理后台 dashboard
+
+
+四、核心页面说明
+================================================================
+
+4.1 登录页 (pages/login)
+---
+   - 提供6个演示用户（5个普通用户+1个管理员）
+   - 每个用户有独立的 openid，对应云数据库中不同的用户记录
+   - 管理员 openid: wx_admin_001
+   - 登录后根据角色跳转不同页面
+
+4.2 首页 (pages/home)
+---
+   - 显示系统公告（弹窗形式）
+   - 随机天气推荐穿搭建议
+   - 展示最新公开穿搭分享（可点击查看详情）
+   - 四大功能快捷入口
+
+4.3 衣橱管理 (pages/wardrobe)
+---
+   - 添加衣物：拍照上传/相册选择 + 填写标签（类型、季节、场合、颜色）
+   - 筛选衣物：按类型、季节、场合、颜色多维度筛选
+   - 编辑/删除衣物
+   - 标记收藏、记录穿着次数
+   - 衣物类别：上衣、裤装、裙装、外套、鞋子、包包、配饰
+
+4.4 智能搭配 (pages/match)
+---
+   自动搭配模式：
+   - 选择穿搭场合（日常/通勤/约会/正式/运动/休闲）
+   - 选择天气情况（晴天/阴天/雨天/大风）
+   - 选择季节（春季/夏季/秋季/冬季）
+   - 点击"生成搭配方案"，算法自动生成最多3套搭配
+   - 搭配算法：规则引擎（颜色搭配+场合匹配+季节过滤）+ 协同过滤（用户行为分析）
+
+   手动搭配模式：
+   - 从衣橱中手动选择衣物组合
+   - 填写搭配名称、场合
+   - 保存搭配方案
+
+4.5 穿搭广场 (pages/share)
+---
+   - 浏览所有公开穿搭分享
+   - 按风格/场合标签筛选
+   - 发布穿搭分享（上传图片+描述+标签）
+   - 借鉴优秀穿搭到个人穿搭库
+
+4.6 穿搭详情 (pages/share-detail)
+---
+   - 查看穿搭大图和详细描述
+   - 点赞/收藏功能
+   - 评论与回复功能
+
+4.7 个人中心 (pages/profile)
+---
+   普通用户显示：
+   - 个人信息卡片（头像、昵称、简介）
+   - 数据统计（衣物数/搭配数/分享数）
+   - 功能入口（我的衣橱、我的搭配、我的收藏、衣物统计、穿搭分析、意见反馈）
+   - 系统设置（账号安全、关于我们、退出登录、注销账号）
+
+   管理员显示：
+   - 管理功能入口（数据概览、用户管理、内容审核、系统管理）
+   - 系统设置（同上）
+
+4.8 管理后台 (pages/admin)
+---
+   数据概览 (dashboard)：
+   - 注册用户数、衣物总量、搭配方案数、穿搭分享数
+   - 待审核数、待处理反馈数
+   - 最近注册用户列表
+
+   用户管理 (users)：
+   - 查看所有注册用户
+   - 用户状态管理（启用/禁用）
+
+   内容审核 (reviews)：
+   - 审核用户发布的穿搭分享
+   - 批量通过/拒绝/删除
+
+   系统管理 (system)：
+   - 发布/管理系统公告
+   - 查看系统日志
+   - 处理用户反馈
+
+
+五、云函数说明
+================================================================
+
+5.1 user 云函数
+---
+   文件：cloudfunctions/user/index.js
+   功能：
+   - login: 用户登录/注册（根据 openid 查找或创建用户）
+   - getUser: 获取用户详细信息（含衣物数/搭配数/分享数统计）
+   - updateUser: 更新用户个人资料
+
+5.2 clothes 云函数
+---
+   文件：cloudfunctions/clothes/index.js
+   功能：
+   - list: 查询衣物列表（支持按类型/季节/场合/颜色筛选）
+   - add: 添加衣物
+   - update: 更新衣物信息
+   - delete: 删除衣物
+   - toggleFavorite: 切换收藏状态
+   - recordWear: 记录穿着次数
+
+5.3 outfit 云函数
+---
+   文件：cloudfunctions/outfit/index.js
+   功能：
+   - list: 查询搭配方案列表
+   - save: 保存搭配方案
+   - delete: 删除搭配方案
+   - generate: 智能搭配算法（核心功能）
+     算法流程：
+     a. 从用户衣橱获取所有衣物
+     b. 按季节过滤可用衣物
+     c. 分类为上衣/下装/鞋子/外套/包包
+     d. 规则引擎打分：季节匹配+场合匹配+颜色搭配+天气偏好
+     e. 协同过滤加分：参考其他用户同场合搭配偏好
+     f. 组合排序，选出前3套最优方案
+
+5.4 share 云函数
+---
+   文件：cloudfunctions/share/index.js
+   功能：
+   - list: 查询公开穿搭分享列表
+   - detail: 获取分享详情（含评论列表）
+   - create: 发布穿搭分享
+   - delete: 删除分享（同时清理评论/点赞/收藏）
+   - like: 点赞/取消点赞
+   - collect: 收藏/取消收藏
+   - comment: 添加评论（支持回复）
+
+5.5 stats 云函数
+---
+   文件：cloudfunctions/stats/index.js
+   功能：
+   - clothes: 衣物使用统计（按类型分布、穿着频率）
+   - style: 穿搭风格分析
+
+5.6 admin 云函数
+---
+   文件：cloudfunctions/admin/index.js
+   功能：
+   - getUsers: 获取所有用户列表
+   - getStats: 获取系统统计数据
+   - getReviews: 获取待审核内容
+   - updateReview: 审核内容（通过/拒绝）
+   - batchDeleteReviews: 批量删除
+   - updateUserStatus: 修改用户状态
+   - getAnnouncements: 获取公告列表
+   - createAnnouncement: 发布公告
+   - deleteAnnouncement: 删除公告
+   - getFeedbacks: 获取反馈列表
+   - replyFeedback: 回复反馈
+   - getLogs: 获取系统日志
+   - getActiveAnnouncements: 获取生效中的公告（前端展示用）
+   - submitFeedback: 用户提交反馈
+
+
+六、数据库集合结构
+================================================================
+
+6.1 users（用户表）
+---
+   _id          string    自动生成的文档ID
+   openid       string    用户唯一标识
+   nickname     string    昵称
+   avatar       string    头像URL
+   gender       string    性别
+   phone        string    手机号
+   bio          string    个人简介
+   role         string    角色（user/admin）
+   status       string    状态（active/disabled）
+   created_at   date      注册时间
+
+6.2 clothes（衣物表）
+---
+   _id          string    文档ID
+   user_id      string    所属用户ID
+   name         string    衣物名称
+   category     string    类型（上衣/裤装/裙装/外套/鞋子/包包/配饰）
+   season       string    季节（春秋/夏季/冬季/四季）
+   occasion     string    场合（日常/通勤/约会/正式/运动/休闲）
+   color        string    颜色
+   brand        string    品牌
+   image        string    图片URL（云存储fileID）
+   is_favorite  boolean   是否收藏
+   wear_count   number    穿着次数
+   created_at   date      创建时间
+
+6.3 outfits（搭配方案表）
+---
+   _id          string    文档ID
+   user_id      string    所属用户ID
+   title        string    搭配名称
+   occasion     string    场合
+   weather      string    天气
+   season       string    季节
+   style        string    风格
+   items        array     包含的衣物ID列表
+   is_auto      number    是否自动生成（1是/0否）
+   is_public    number    是否公开（1是/0否）
+   created_at   date      创建时间
+
+6.4 shares（穿搭分享表）
+---
+   _id            string    文档ID
+   user_id        string    发布用户ID
+   outfit_id      string    关联搭配方案ID
+   content        string    文字描述
+   images         string    图片URL
+   style_tags     string    风格标签（逗号分隔）
+   occasion_tags  string    场合标签（逗号分隔）
+   visibility     string    可见性（public/private）
+   status         string    审核状态（approved/pending/rejected）
+   likes_count    number    点赞数
+   comments_count number    评论数
+   collects_count number    收藏数
+   created_at     date      创建时间
+
+6.5 comments（评论表）
+---
+   _id          string    文档ID
+   share_id     string    所属分享ID
+   user_id      string    评论用户ID
+   content      string    评论内容
+   parent_id    string    父评论ID（回复功能）
+   created_at   date      创建时间
+
+6.6 likes（点赞表）
+---
+   _id          string    文档ID
+   share_id     string    分享ID
+   user_id      string    用户ID
+   created_at   date      点赞时间
+
+6.7 collects（收藏表）
+---
+   _id          string    文档ID
+   share_id     string    分享ID
+   user_id      string    用户ID
+   created_at   date      收藏时间
+
+6.8 logs（系统日志表）
+---
+   _id          string    文档ID
+   action       string    操作类型
+   detail       string    操作详情
+   operator     string    操作者
+   created_at   date      操作时间
+
+
+七、工具模块说明
+================================================================
+
+7.1 api.js
+---
+   统一的API调用层，封装了云函数调用和HTTP请求两种模式。
+   - 通过 app.globalData.useCloud 开关控制使用云函数还是HTTP
+   - 所有API方法都返回 Promise
+   - 错误统一在控制台打印
+
+7.2 store.js
+---
+   用户状态管理模块：
+   - getUser(): 获取当前登录用户信息
+   - setUser(user): 保存用户信息到本地缓存
+   - getUserId(): 获取用户ID（兼容云数据库 _id）
+   - isLoggedIn(): 判断是否已登录
+   - isAdmin(): 判断是否是管理员
+   - logout(): 退出登录，清除缓存
+
+
+八、智能搭配算法说明
+================================================================
+
+位置：cloudfunctions/outfit/index.js 中的 generateOutfits 函数
+
+算法流程：
+1. 获取用户所有衣物
+2. 季节过滤：根据选择的季节筛选可用衣物（支持"四季"通配）
+3. 分类：将衣物按类型分为上衣、下装、鞋子、外套、包包
+4. 评分引擎：
+   - 季节匹配分（权重8）
+   - 场合匹配分（权重10）
+   - 天气颜色偏好加分（5分）
+   - 收藏衣物加分（3分）
+   - 穿着频率加分
+   - 历史搭配频率加分
+5. 协同过滤：
+   - 查询其他用户在同场合的搭配记录
+   - 统计品类偏好和颜色偏好
+   - 对当前用户的衣物进行个性化加分
+6. 颜色搭配评分：内置颜色和谐度对照表
+7. 组合排序：上衣×下装全组合打分，取前3名
+8. 扩展搭配：为每套方案匹配最佳鞋子、外套、包包

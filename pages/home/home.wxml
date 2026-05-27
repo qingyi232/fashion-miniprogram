@@ -1,0 +1,113 @@
+<view class="page-home">
+  <!-- 顶部横幅 -->
+  <view class="hero">
+    <view class="hero-content">
+      <view class="hero-badge">智能穿搭助手</view>
+      <view class="hero-title">用心搭配每一天</view>
+      <view class="hero-desc">管理衣橱、智能搭配、分享穿搭灵感</view>
+      <view class="hero-actions">
+        <navigator url="/pages/match/match" open-type="switchTab" class="btn btn-primary" style="display:inline-block">开始搭配</navigator>
+        <navigator url="/pages/share/share" open-type="switchTab" class="btn btn-outline" style="display:inline-block;margin-left:16rpx">浏览广场</navigator>
+      </view>
+    </view>
+  </view>
+
+  <!-- 天气卡片 -->
+  <view class="section weather-section">
+    <view class="weather-card card">
+      <view class="weather-left">
+        <text class="weather-icon">{{weather.icon}}</text>
+        <view class="weather-info">
+          <text class="weather-temp">{{weather.temp}}°C</text>
+          <text class="weather-desc">{{weather.desc}}</text>
+        </view>
+      </view>
+      <view class="weather-right">
+        <text class="weather-tip-label">今日穿搭建议</text>
+        <text class="weather-tip">{{weather.tip}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="section">
+    <view class="entry-grid">
+      <view class="entry-col" bindtap="goWardrobe">
+        <view class="entry-item">
+          <view class="entry-icon-wrap" style="background:#fdf6f0"><text>👚</text></view>
+          <text class="entry-text">添加衣物</text>
+        </view>
+      </view>
+      <view class="entry-col" bindtap="goMatch">
+        <view class="entry-item">
+          <view class="entry-icon-wrap" style="background:#f0f7f2"><text>✨</text></view>
+          <text class="entry-text">智能搭配</text>
+        </view>
+      </view>
+      <view class="entry-col" bindtap="goPublish">
+        <view class="entry-item">
+          <view class="entry-icon-wrap" style="background:#fdf2f5"><text>📸</text></view>
+          <text class="entry-text">发布穿搭</text>
+        </view>
+      </view>
+      <view class="entry-col" bindtap="goShare">
+        <view class="entry-item">
+          <view class="entry-icon-wrap" style="background:#f5f0ea"><text>🔥</text></view>
+          <text class="entry-text">穿搭广场</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 核心功能 -->
+  <view class="section">
+    <view class="section-title">核心功能</view>
+    <view class="section-line"></view>
+    <view class="feature-grid">
+      <view class="feature-col" wx:for="{{features}}" wx:key="title">
+        <view class="feature-card card">
+          <text class="feature-icon">{{item.icon}}</text>
+          <text class="feature-title">{{item.title}}</text>
+          <text class="feature-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推荐穿搭 -->
+  <view class="section" wx:if="{{shares.length}}">
+    <view class="section-title">推荐穿搭</view>
+    <view class="section-line"></view>
+    <view class="trend-list">
+      <view class="trend-card card" wx:for="{{shares}}" wx:key="id" bindtap="goShareDetail" data-id="{{item._id}}">
+        <image src="{{item.images}}" class="trend-img" mode="aspectFill"></image>
+        <view class="trend-info">
+          <view class="trend-user">
+            <image src="{{item.avatar}}" class="trend-avatar"></image>
+            <text>{{item.nickname}}</text>
+          </view>
+          <text class="trend-text">{{item.content}}</text>
+          <view class="trend-stats">
+            <text>❤️ {{item.likes_count}}</text>
+            <text>💬 {{item.comments_count}}</text>
+            <text>⭐ {{item.collects_count}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 公告弹窗 -->
+  <view class="modal-mask" wx:if="{{showAnnouncement}}" bindtap="closeAnnouncement">
+    <view class="announcement-popup" catchtap="">
+      <view class="ann-header">
+        <text class="ann-icon">📢</text>
+        <text class="ann-title">{{announcement.title}}</text>
+      </view>
+      <text class="ann-content">{{announcement.content}}</text>
+      <view class="ann-action">
+        <view class="btn btn-primary" bindtap="closeAnnouncement">我知道了</view>
+      </view>
+    </view>
+  </view>
+</view>

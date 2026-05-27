@@ -1,0 +1,274 @@
+.hero {
+  padding: 48rpx 32rpx 40rpx;
+  background: linear-gradient(165deg, #faf9f7 0%, #fdf6f0 40%, #f5f0ea 70%, #f0f7f2 100%);
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 8rpx 24rpx;
+  border-radius: 30rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  background: #fdf6f0;
+  color: #b8845a;
+  margin-bottom: 20rpx;
+  letter-spacing: 2rpx;
+}
+
+.hero-title {
+  font-size: 48rpx;
+  font-weight: 800;
+  color: #2d2926;
+  margin-bottom: 12rpx;
+}
+
+.hero-desc {
+  font-size: 28rpx;
+  color: #6b6462;
+  margin-bottom: 32rpx;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.section {
+  padding: 24rpx 32rpx;
+}
+
+.weather-card {
+  display: flex;
+  flex-direction: column;
+  padding: 28rpx;
+  border-radius: 20rpx;
+}
+
+.weather-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.weather-icon {
+  font-size: 56rpx;
+}
+
+.weather-info {
+  margin-left: 16rpx;
+}
+
+.weather-temp {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #2d2926;
+  display: block;
+}
+
+.weather-desc {
+  font-size: 24rpx;
+  color: #6b6462;
+  display: block;
+}
+
+.weather-tip-label {
+  font-size: 22rpx;
+  color: #b8845a;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+  display: block;
+  letter-spacing: 1rpx;
+}
+
+.weather-tip {
+  font-size: 26rpx;
+  color: #6b6462;
+  line-height: 1.6;
+}
+
+/* 快捷入口 - 2x2 网格 */
+.entry-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.entry-col {
+  width: 48%;
+  margin-bottom: 16rpx;
+}
+
+.entry-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28rpx 0;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+}
+
+.entry-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  margin-bottom: 12rpx;
+}
+
+.entry-text {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #2d2926;
+}
+
+/* 核心功能 - 2x2 网格 */
+.feature-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.feature-col {
+  width: 48%;
+  margin-bottom: 16rpx;
+}
+
+.feature-card {
+  padding: 28rpx 20rpx;
+  text-align: center;
+}
+
+.feature-icon {
+  font-size: 48rpx;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.feature-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #2d2926;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.feature-desc {
+  font-size: 24rpx;
+  color: #6b6462;
+  line-height: 1.6;
+}
+
+/* 推荐穿搭 */
+.trend-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.trend-card {
+  display: block;
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+
+.trend-img {
+  width: 100%;
+  height: 360rpx;
+}
+
+.trend-info {
+  padding: 20rpx;
+}
+
+.trend-user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.trend-avatar {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  margin-right: 12rpx;
+}
+
+.trend-user text {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.trend-text {
+  font-size: 26rpx;
+  color: #6b6462;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+
+.trend-stats {
+  display: flex;
+  flex-direction: row;
+}
+
+.trend-stats text {
+  font-size: 24rpx;
+  color: #a09896;
+  margin-right: 24rpx;
+}
+
+/* 公告弹窗 */
+.announcement-popup {
+  width: 80%;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  box-shadow: 0 16rpx 48rpx rgba(0,0,0,0.15);
+}
+
+.ann-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.ann-icon {
+  font-size: 40rpx;
+  margin-right: 12rpx;
+}
+
+.ann-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2d2926;
+}
+
+.ann-content {
+  font-size: 28rpx;
+  color: #6b6462;
+  line-height: 1.8;
+  display: block;
+  margin-bottom: 28rpx;
+}
+
+.ann-action {
+  display: flex;
+  justify-content: center;
+}

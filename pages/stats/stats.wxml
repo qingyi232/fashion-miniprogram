@@ -1,0 +1,149 @@
+<view class="container">
+  <view class="page-header">
+    <view class="title">数据分析</view>
+    <view class="desc">衣橱使用统计与穿搭偏好分析</view>
+  </view>
+
+  <view class="loading-box" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="error-box" wx:elif="{{loadError}}">
+    <text>{{loadError}}</text>
+    <view class="btn btn-outline btn-sm retry-btn" bindtap="loadData">重试</view>
+  </view>
+
+  <view class="empty-hint card" wx:elif="{{!clothesData.total && !outfitCount}}">
+    <text class="empty-hint-title">暂无统计数据</text>
+    <text class="empty-hint-desc">添加衣物并创建搭配后，这里会展示分析图表</text>
+    <view class="empty-hint-actions">
+      <view class="btn btn-primary btn-sm" bindtap="goWardrobe">去添加衣物</view>
+      <view class="btn btn-outline btn-sm" bindtap="goMatch">去创建搭配</view>
+    </view>
+  </view>
+
+  <block wx:else>
+  <!-- 概览统计 -->
+  <view class="stats-overview">
+    <view class="stat-card card">
+      <text class="stat-icon">👚</text>
+      <text class="stat-num">{{clothesData.total || 0}}</text>
+      <text class="stat-label">衣物总数</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-icon">❤️</text>
+      <text class="stat-num">{{clothesData.favoriteCount || 0}}</text>
+      <text class="stat-label">心仪衣物</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-icon">✨</text>
+      <text class="stat-num">{{outfitCount}}</text>
+      <text class="stat-label">穿搭方案</text>
+    </view>
+    <view class="stat-card card">
+      <text class="stat-icon">📸</text>
+      <text class="stat-num">{{occasionCount}}</text>
+      <text class="stat-label">涵盖场合</text>
+    </view>
+  </view>
+
+  <!-- 衣物分类 -->
+  <view class="chart-card card">
+    <text class="chart-title">衣物分类分布</text>
+    <view class="bar-chart">
+      <view class="bar-row" wx:for="{{clothesData.byCategory}}" wx:key="category">
+        <text class="bar-label">{{item.category}}</text>
+        <view class="bar-track">
+          <view class="bar-fill" style="width:{{item.percent}}%"></view>
+        </view>
+        <text class="bar-val">{{item.count}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 季节分布 -->
+  <view class="chart-card card">
+    <text class="chart-title">季节分布</text>
+    <view class="bar-chart">
+      <view class="bar-row" wx:for="{{clothesData.bySeason}}" wx:key="season">
+        <text class="bar-label">{{item.season}}</text>
+        <view class="bar-track">
+          <view class="bar-fill season" style="width:{{item.percent}}%"></view>
+        </view>
+        <text class="bar-val">{{item.count}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 颜色偏好 -->
+  <view class="chart-card card">
+    <text class="chart-title">颜色偏好</text>
+    <view class="color-grid">
+      <view class="color-item" wx:for="{{clothesData.byColor}}" wx:key="color">
+        <text class="color-name">{{item.color}}</text>
+        <text class="color-count">{{item.count}}件</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 穿搭风格分析 -->
+  <view class="chart-card card">
+    <text class="chart-title">穿搭风格分析</text>
+    <view class="bar-chart" wx:if="{{styleData.length}}">
+      <view class="bar-row" wx:for="{{styleData}}" wx:key="style">
+        <text class="bar-label">{{item.style}}</text>
+        <view class="bar-track">
+          <view class="bar-fill style-bar" style="width:{{item.percent}}%"></view>
+        </view>
+        <text class="bar-val">{{item.count}}次</text>
+      </view>
+    </view>
+    <view wx:else class="empty-mini"><text>暂无数据</text></view>
+  </view>
+
+  <!-- 场合分布 -->
+  <view class="chart-card card">
+    <text class="chart-title">场合分布</text>
+    <view class="color-grid" wx:if="{{occasionData.length}}">
+      <view class="color-item" wx:for="{{occasionData}}" wx:key="occasion">
+        <text class="color-name">{{item.occasion}}</text>
+        <text class="color-count">{{item.count}}次</text>
+      </view>
+    </view>
+    <view wx:else class="empty-mini"><text>暂无数据</text></view>
+  </view>
+
+  <!-- 最常穿 -->
+  <view class="chart-card card">
+    <text class="chart-title">最常穿的衣物 TOP5</text>
+    <view class="top-list">
+      <view class="top-item" wx:for="{{clothesData.mostWorn}}" wx:key="id">
+        <text class="top-rank">{{index + 1}}</text>
+        <image src="{{item.image}}" class="top-img" mode="aspectFill"></image>
+        <view class="top-info">
+          <text class="top-name">{{item.name}}</text>
+          <text class="top-count">穿过 {{item.wear_count}} 次</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 闲置提醒 -->
+  <view class="chart-card card">
+    <text class="chart-title">闲置衣物提醒</text>
+    <view class="top-list" wx:if="{{clothesData.leastWorn.length}}">
+      <view class="top-item" wx:for="{{clothesData.leastWorn}}" wx:key="id">
+        <text class="idle-badge">💤</text>
+        <image src="{{item.image}}" class="top-img" mode="aspectFill"></image>
+        <view class="top-info">
+          <text class="top-name">{{item.name}}</text>
+          <text class="top-count idle">仅穿过 {{item.wear_count}} 次</text>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="empty-mini">
+      <text>没有闲置衣物，棒！</text>
+    </view>
+  </view>
+  </block>
+</view>

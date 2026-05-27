@@ -1,0 +1,168 @@
+<view class="container">
+  <!-- 未登录 -->
+  <view wx:if="{{!isLoggedIn}}" class="empty-state" style="padding-top:200rpx">
+    <view class="icon">👤</view>
+    <text>请先登录</text>
+    <navigator url="/pages/login/login" class="btn btn-primary" style="margin-top:24rpx">去登录</navigator>
+  </view>
+
+  <!-- 已登录 -->
+  <block wx:else>
+    <!-- 个人信息卡片 -->
+    <view class="profile-header card">
+      <image src="{{profile.avatar}}" class="profile-avatar"></image>
+      <view class="profile-info">
+        <text class="profile-name">{{profile.nickname}}</text>
+        <text class="profile-bio">{{profile.bio || '这个人很懒，还没有介绍'}}</text>
+        <view class="profile-meta">
+          <text wx:if="{{profile.gender}}">{{profile.gender}}</text>
+          <text wx:if="{{profile.phone}}">{{profile.phone}}</text>
+        </view>
+      </view>
+      <view class="btn btn-outline btn-sm" bindtap="showEditModal">编辑资料</view>
+    </view>
+
+    <!-- 数据统计 -->
+    <view class="profile-stats">
+      <view class="p-stat">
+        <text class="p-stat-num">{{profile.clothesCount || 0}}</text>
+        <text class="p-stat-label">衣物</text>
+      </view>
+      <view class="p-stat">
+        <text class="p-stat-num">{{profile.outfitsCount || 0}}</text>
+        <text class="p-stat-label">搭配</text>
+      </view>
+      <view class="p-stat">
+        <text class="p-stat-num">{{profile.sharesCount || 0}}</text>
+        <text class="p-stat-label">分享</text>
+      </view>
+    </view>
+
+    <!-- 管理员功能区 -->
+    <block wx:if="{{isAdmin}}">
+      <view class="section-label">管理功能</view>
+      <view class="quick-links">
+        <navigator url="/pages/admin/dashboard" class="quick-link card" style="color:#6c7ae0">
+          <text class="link-icon">📊</text><text>数据概览</text>
+        </navigator>
+        <navigator url="/pages/admin/users" class="quick-link card" style="color:#6c7ae0">
+          <text class="link-icon">👥</text><text>用户管理</text>
+        </navigator>
+        <navigator url="/pages/admin/reviews" class="quick-link card" style="color:#6c7ae0">
+          <text class="link-icon">📋</text><text>内容审核</text>
+        </navigator>
+        <navigator url="/pages/admin/system" class="quick-link card" style="color:#6c7ae0">
+          <text class="link-icon">⚙️</text><text>系统管理</text>
+        </navigator>
+      </view>
+    </block>
+
+    <!-- 普通用户功能区 -->
+    <block wx:else>
+      <view class="section-label">我的功能</view>
+      <view class="quick-links">
+        <navigator url="/pages/wardrobe/wardrobe" open-type="switchTab" class="quick-link card">
+          <text class="link-icon">👚</text><text>我的衣橱</text>
+        </navigator>
+        <navigator url="/pages/match/match" open-type="switchTab" class="quick-link card">
+          <text class="link-icon">✨</text><text>我的搭配</text>
+        </navigator>
+        <navigator url="/pages/collects/collects" class="quick-link card">
+          <text class="link-icon">⭐</text><text>我的收藏</text>
+        </navigator>
+        <navigator url="/pages/stats/stats" class="quick-link card">
+          <text class="link-icon">📊</text><text>数据分析</text>
+        </navigator>
+        <view class="quick-link card" bindtap="showFeedbackModal">
+          <text class="link-icon">💬</text><text>意见反馈</text>
+        </view>
+      </view>
+    </block>
+
+    <!-- 系统设置 -->
+    <view class="section-label">系统设置</view>
+    <view class="quick-links">
+      <view class="quick-link card" bindtap="showEditModal">
+        <text class="link-icon">🔐</text><text>账号安全</text>
+      </view>
+      <view class="quick-link card" bindtap="showAboutModal">
+        <text class="link-icon">ℹ️</text><text>关于我们</text>
+      </view>
+      <view class="quick-link card" bindtap="doLogout">
+        <text class="link-icon">🚪</text><text>退出登录</text>
+      </view>
+      <view class="quick-link card" style="color:#d4726a" bindtap="doDeactivate">
+        <text class="link-icon">⚠️</text><text>注销账号</text>
+      </view>
+    </view>
+
+    <!-- 编辑资料弹窗 -->
+    <view class="modal-mask" wx:if="{{showEdit}}" bindtap="hideEdit">
+      <view class="modal-content" catchtap="stopPropagation">
+        <view class="modal-title">编辑个人资料</view>
+        <view class="form-group">
+          <text class="form-label">昵称</text>
+          <input class="form-input" value="{{editForm.nickname}}" bindinput="onEditInput" data-field="nickname" />
+        </view>
+        <view class="form-group">
+          <text class="form-label">头像链接</text>
+          <input class="form-input" value="{{editForm.avatar}}" bindinput="onEditInput" data-field="avatar" />
+        </view>
+        <view class="form-row">
+          <view class="form-group">
+            <text class="form-label">性别</text>
+            <picker range="{{['男','女','保密']}}" bindchange="onGenderChange">
+              <view class="form-input">{{editForm.gender || '保密'}}</view>
+            </picker>
+          </view>
+          <view class="form-group">
+            <text class="form-label">手机号</text>
+            <input class="form-input" value="{{editForm.phone}}" bindinput="onEditInput" data-field="phone" />
+          </view>
+        </view>
+        <view class="form-group">
+          <text class="form-label">个人简介</text>
+          <textarea class="form-textarea" value="{{editForm.bio}}" bindinput="onEditInput" data-field="bio"></textarea>
+        </view>
+        <view class="modal-actions">
+          <view class="btn btn-ghost" bindtap="hideEdit">取消</view>
+          <view class="btn btn-primary" bindtap="saveProfile">保存</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 意见反馈弹窗 -->
+    <view class="modal-mask" wx:if="{{showFeedback}}" bindtap="hideFeedback">
+      <view class="modal-content" catchtap="stopPropagation">
+        <view class="modal-title">意见反馈</view>
+        <view class="form-group">
+          <text class="form-label">反馈类型</text>
+          <picker range="{{['建议','投诉']}}" bindchange="onFeedbackType">
+            <view class="form-input">{{feedbackForm.type === 'suggestion' ? '建议' : '投诉'}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">反馈内容</text>
+          <textarea class="form-textarea" value="{{feedbackForm.content}}" bindinput="onFeedbackContent" placeholder="请描述您的建议或问题..."></textarea>
+        </view>
+        <view class="modal-actions">
+          <view class="btn btn-ghost" bindtap="hideFeedback">取消</view>
+          <view class="btn btn-primary" bindtap="submitFeedback">提交反馈</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 关于我们弹窗 -->
+    <view class="modal-mask" wx:if="{{showAbout}}" bindtap="hideAbout">
+      <view class="modal-content" catchtap="stopPropagation" style="text-align:center">
+        <text style="font-size:80rpx;display:block;margin-bottom:16rpx">👗</text>
+        <view class="modal-title" style="text-align:center">衣搭 · 智能穿搭助手</view>
+        <text style="color:#666;font-size:24rpx;display:block;margin-bottom:20rpx">版本 1.0.0</text>
+        <text style="color:#666;font-size:26rpx;line-height:1.8;display:block">基于智能算法的年轻人衣物管理与穿搭搭配系统，帮助你管理衣橱、智能搭配、分享穿搭灵感。</text>
+        <view class="modal-actions" style="justify-content:center;margin-top:28rpx">
+          <view class="btn btn-ghost" bindtap="hideAbout">关闭</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,93 @@
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 32rpx;
+  margin-top: 16rpx;
+}
+
+.profile-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid #fdf6f0;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  display: block;
+}
+
+.profile-bio {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 6rpx;
+  display: block;
+}
+
+.profile-meta {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: 80rpx;
+  padding: 28rpx;
+}
+
+.p-stat {
+  text-align: center;
+}
+
+.p-stat-num {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #b8845a;
+  display: block;
+}
+
+.p-stat-label {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 4rpx;
+}
+
+.section-label {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin: 28rpx 0 16rpx;
+  padding-left: 8rpx;
+}
+
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.quick-link {
+  width: 48% !important;
+  margin-bottom: 16rpx;
+  display: flex !important;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+.link-icon {
+  font-size: 36rpx;
+}

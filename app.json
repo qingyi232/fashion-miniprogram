@@ -1,0 +1,65 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/wardrobe/wardrobe",
+    "pages/match/match",
+    "pages/share/share",
+    "pages/profile/profile",
+    "pages/login/login",
+    "pages/stats/stats",
+    "pages/collects/collects",
+    "pages/share-detail/share-detail",
+    "pages/admin/dashboard",
+    "pages/admin/users",
+    "pages/admin/reviews",
+    "pages/admin/system"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "衣搭",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f8f9",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#d4a574",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/wardrobe/wardrobe",
+        "text": "衣橱",
+        "iconPath": "assets/icons/wardrobe.png",
+        "selectedIconPath": "assets/icons/wardrobe-active.png"
+      },
+      {
+        "pagePath": "pages/match/match",
+        "text": "搭配",
+        "iconPath": "assets/icons/match.png",
+        "selectedIconPath": "assets/icons/match-active.png"
+      },
+      {
+        "pagePath": "pages/share/share",
+        "text": "广场",
+        "iconPath": "assets/icons/share.png",
+        "selectedIconPath": "assets/icons/share-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

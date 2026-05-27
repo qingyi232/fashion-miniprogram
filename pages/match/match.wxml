@@ -1,0 +1,136 @@
+<view class="container">
+  <view class="page-header">
+    <view class="title">智能搭配</view>
+    <view class="desc">选择场合与天气，为你生成个性化搭配方案</view>
+  </view>
+
+  <!-- 模式切换 -->
+  <view class="mode-tabs">
+    <view class="mode-tab {{mode === 'auto' ? 'active' : ''}}" bindtap="switchMode" data-mode="auto">✨ 自动搭配</view>
+    <view class="mode-tab {{mode === 'manual' ? 'active' : ''}}" bindtap="switchMode" data-mode="manual">🖐️ 手动搭配</view>
+  </view>
+
+  <!-- 自动搭配 -->
+  <block wx:if="{{mode === 'auto'}}">
+    <view class="match-panel card">
+      <text class="panel-title">搭配条件</text>
+      <view class="form-row" style="margin-top:16rpx">
+        <view class="form-group">
+          <text class="form-label">穿搭场合</text>
+          <picker range="{{occasions}}" value="{{occasionIdx}}" bindchange="onOccasionChange">
+            <view class="form-input">{{params.occasion}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">天气情况</text>
+          <picker range="{{weathers}}" value="{{weatherIdx}}" bindchange="onWeatherChange">
+            <view class="form-input">{{params.weather}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">季节</text>
+        <picker range="{{seasonList}}" value="{{seasonIdx}}" bindchange="onSeasonChange">
+          <view class="form-input">{{params.season}}</view>
+        </picker>
+      </view>
+      <view class="btn btn-primary btn-block" bindtap="generate" style="margin-top:16rpx">
+        {{loading ? '搭配方案生成中...' : '✨ 生成搭配方案'}}
+      </view>
+    </view>
+
+    <!-- 搭配结果 -->
+    <view wx:if="{{schemes.length}}" class="schemes">
+      <text class="sub-title">为你推荐 {{schemes.length}} 套搭配方案</text>
+      <view class="scheme-card card" wx:for="{{schemes}}" wx:key="index">
+        <view class="scheme-header">
+          <text class="scheme-title">{{item.title}}</text>
+          <view class="scheme-tags">
+            <text class="tag">{{item.occasion}}</text>
+            <text class="tag">{{item.weather}}</text>
+            <text class="tag">{{item.style}}</text>
+          </view>
+        </view>
+        <scroll-view class="scheme-items" scroll-x="true">
+          <view class="scheme-item" wx:for="{{item.itemDetails}}" wx:for-item="cloth" wx:key="id">
+            <image src="{{cloth.image}}" mode="aspectFill"></image>
+            <text>{{cloth.name}}</text>
+          </view>
+        </scroll-view>
+        <view class="scheme-actions">
+          <view class="btn btn-sm btn-primary" bindtap="saveScheme" data-scheme="{{item}}">💾 保存方案</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 手动搭配 -->
+  <block wx:if="{{mode === 'manual'}}">
+    <view class="manual-section">
+      <text class="sub-title">从衣橱选择衣物</text>
+      <picker range="{{['全部类型'].concat(categories)}}" bindchange="onManualFilter">
+        <view class="filter-select">{{manualFilter || '全部类型'}} ▾</view>
+      </picker>
+      <scroll-view class="manual-clothes-scroll" scroll-y="true" style="height:400rpx;margin-top:16rpx">
+        <view class="manual-clothes-grid">
+          <view class="manual-cloth {{manualSelected.indexOf(item.id) >= 0 ? 'selected' : ''}}"
+            wx:for="{{allClothes}}" wx:key="id" bindtap="toggleManualSelect" data-item="{{item}}">
+            <image src="{{item.image}}" mode="aspectFill"></image>
+            <text>{{item.name}}</text>
+            <view class="check-mark" wx:if="{{manualSelected.indexOf(item.id) >= 0}}">✓</view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view wx:if="{{selectedDetails.length}}" class="preview-area card" style="margin-top:24rpx">
+        <text class="sub-title">搭配预览（已选 {{selectedDetails.length}} 件）</text>
+        <view class="preview-items">
+          <view class="preview-item" wx:for="{{selectedDetails}}" wx:key="id">
+            <image src="{{item.image}}" mode="aspectFill"></image>
+            <view class="preview-info">
+              <text class="preview-name">{{item.name}}</text>
+              <text class="preview-cat">{{item.category}} · {{item.color}}</text>
+            </view>
+            <view class="remove-btn" bindtap="removeManual" data-id="{{item.id}}">✕</view>
+          </view>
+        </view>
+        <view class="form-group" style="margin-top:20rpx">
+          <text class="form-label">方案名称</text>
+          <input class="form-input" value="{{manualTitle}}" bindinput="onManualTitle" placeholder="如：春日出游搭配" />
+        </view>
+        <view class="form-row">
+          <view class="form-group">
+            <text class="form-label">场合</text>
+            <picker range="{{occasions}}" bindchange="onManualOccasion">
+              <view class="form-input">{{manualOccasion}}</view>
+            </picker>
+          </view>
+          <view class="form-group">
+            <text class="form-label">公开/私有</text>
+            <picker range="{{['仅自己可见','公开']}}" bindchange="onManualPublic">
+              <view class="form-input">{{manualPublic ? '公开' : '仅自己可见'}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="btn btn-primary btn-block" bindtap="saveManual">💾 保存手动搭配</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 已保存的搭配 -->
+  <view wx:if="{{savedOutfits.length}}" class="saved-section" style="margin-top:32rpx">
+    <text class="sub-title">已保存的搭配（{{savedOutfits.length}}）</text>
+    <view class="saved-card card" wx:for="{{savedOutfits}}" wx:key="id">
+      <text class="saved-title">{{item.title}}</text>
+      <view class="saved-tags">
+        <text class="tag">{{item.occasion}}</text>
+        <text class="tag">{{item.style || item.season}}</text>
+        <text class="tag {{item.is_auto ? 'tag-green' : 'tag-pink'}}">{{item.is_auto ? 'AI推荐' : '手动搭配'}}</text>
+        <text class="tag {{item.is_public ? 'tag-blue' : ''}}">{{item.is_public ? '公开' : '私有'}}</text>
+      </view>
+      <view class="saved-actions">
+        <view class="btn btn-sm btn-ghost btn-danger" bindtap="removeOutfit" data-item="{{item}}">删除</view>
+      </view>
+    </view>
+  </view>
+</view>
